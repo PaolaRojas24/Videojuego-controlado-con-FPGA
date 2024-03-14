@@ -51,24 +51,22 @@ void draw() {
     n3.sound();
   }
  }
-```
+````
 Esta estructura modular y organizada nos ha permitido desarrollar y mantener el juego de manera efectiva, facilitando la implementación de nuevas características y la solución de problemas
 <h2>Código en ensamblador</h2>
-<h2>Código VHDL</h2>
-```psm
-CONSTANT PuertoBoton, 00
+El código ensamblador recibe un número binario de 4 digitos y regresa el ASCII de la letra correspondiente.
+
+      CONSTANT PuertoBoton, 00
       CONSTANT PuertoLeeListoTX,    11
       CONSTANT PuertoEscribeDatoTX, 12
-      
       NAMEREG s7, boton
       NAMEREG s5, DatoSerial
       NAMEREG s6, EstadoTX
-      
       ADDRESS 000
+````
 loop:
       INPUT boton, PuertoBoton
       AND boton, 0F
-
       ;1 0 0 0
       COMPARE boton, 08
       JUMP Z, Izquierda
@@ -88,7 +86,6 @@ loop:
       COMPARE boton, 0C
       JUMP Z, DiagIzq
       JUMP salidaDefault
-
 Izquierda:
       LOAD DatoSerial, "A"
       CALL tx_uart
@@ -117,7 +114,6 @@ salidaDefault:
       LOAD DatoSerial, "."
       CALL tx_uart
       Jump loop
-
 tx_uart:
       INPUT EstadoTX, PuertoLeeListoTX
       COMPARE EstadoTX, 01
@@ -125,17 +121,56 @@ tx_uart:
       OUTPUT DatoSerial, PuertoEscribeDatoTX
       CALL delay
       RETURN
-
 delay: 
       LOAD s2, 17
       LOAD s1, D7
       LOAD s0, 84
-      
 delay_loop: 
       SUB s0, 1'd
       SUBCY s1, 0'd
       SUBCY s2, 0'd
       JUMP NZ, delay_loop
       RETURN
-```
+````
+<h2>Código VHDL</h2>
+El código que se presenta es el top-level, este código sirve como el alambre que conecta los distintos componentes entre si. Recibe como entrada el valor de los botones y da como salida el valor ASCII de la letra correspondiente.
+   
+    Begin
+            mux: puerto_entrada
+                     port map(
+                                MUX_ENTRADA => BOTONES,
+                                 MUX_SALIDA => reg_entrada_in, 
+                                --pines de comunicaciÃ³n con Picoblaze  
+                                    PORT_ID => port_id_s
+                                );  
+     
+     registro_entrada : registro_puerto_entrada
+                        port map(
+                                    CLK  => CLK,
+                                    RST  => RST,
+                                    D  => reg_entrada_in,
+                                    Q  => reg_entrada_out
+                                    );
+     
+     kcpsm6 : embedded_kcpsm6
+                port map (                   
+                             in_port => reg_entrada_out,
+                            out_port => out_port_s,
+                             port_id => port_id_s,
+                        write_strobe => write_strobe_s,
+                                 clk => CLK,
+                                 rst => RST);
+                                 
 
+        uart : modulo_uart
+                 port map( 
+                     CLK => CLK,
+                     RST => RST,
+                 PORT_ID => port_id_s,
+              INPUT_PORT => out_port_s,
+             --OUTPUT_PORT : out STD_LOGIC_VECTOR (7 downto 0);
+            WRITE_STROBE => write_strobe_s,
+                      TX => TX,
+                      RX =>RX
+                      );
+    end Behavioral;
