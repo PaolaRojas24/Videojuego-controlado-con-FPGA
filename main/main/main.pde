@@ -54,7 +54,7 @@ Pared d81, d82, d83, d84, d85, d86, d87, d88, d89, sd8;
 Pared d91, d92, d93, d94, d95, d96, d97, d98, d99, sd9;
  
 void setup() {
-  //port = new Serial(this, "COM13", 115200);
+  port = new Serial(this, "COM13", 115200);
   size(1500,700);
   bg1 = loadImage("fondo1.png");
   bg2 = loadImage("fondo2.png");
@@ -295,9 +295,36 @@ void setup() {
 }
 
 void draw() {
-  /*if (0 < port.available()) {
+  if (0 < port.available()) {
     val = port.read();
-  } */
+    println("dato: " + val);
+    println(".");
+  }
+  if  (val == 87){
+    w = true;
+  }
+  else if  (val == 65){
+    a = true;
+  }
+  else if  (val == 69){
+    d = true;
+    w = true;
+  }
+  else if  (val == 81){
+    a = true;
+    w = true;
+  }
+  else if  (val == 83 && y <= 75){
+    s = true;
+  }
+  else if  (val == 68){
+    d = true;
+  }
+  else{
+    w = false;
+    a = false;
+    d = false;
+  }
   if(start){
     n1.start();
     n1.restart();
@@ -343,41 +370,4 @@ boolean place_free(int xx,int yy) {
     return true;
   }
   return false;
-}
- 
-void keyPressed() {
-  /*switch(val) {
-    case 68: d = true; break;
-    case 65: a = true; break;
-    case 87: w = true; 
-    break;
-    case 83: 
-      if (y <= 75){
-        s = true;
-      }
-    break;
-  }*/
-  switch(keyCode) {
-    case 'D': d = true; break;
-    case 'A': a = true; break;
-    case 'W': w = true; break;
-    case 'S': 
-      if (y <= 75){
-        s = true;
-      }
-    break;
-  }
-}
-
-void keyReleased() {
-  /*switch(val) {
-    case 68: d = false; break;
-    case 65: a = false; break;
-    case 87: w = false; break;
-  }*/
-  switch(keyCode) {
-    case 'D': d = false; break;
-    case 'A': a = false; break;
-    case 'W': w = false; break;
-  }
 }
