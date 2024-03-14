@@ -5,6 +5,8 @@ El videojuego presenta una emocionante aventura donde los jugadores controlan a 
 </br>
 El diseño de este emocionante juego se llevó a cabo principalmente mediante el uso de Processing, un entorno de programación especializado en la creación de experiencias visuales interactivas. Además, para lograr una interacción fluida entre el juego y la tarjeta FPGA, se emplearon herramientas adicionales como Vivado, utilizando VHDL, y Picoblaze con lenguaje ensamblador. Estas herramientas permitieron establecer una comunicación efectiva entre la tarjeta FPGA, que actúa como el control del juego a través de cuatro botones, el puerto serial de la computadora y el propio juego implementado en Processing.
 Video del juego: https://youtu.be/y9cTiVToyhw?feature=shared
+</br>
+Video de la presentación: https://youtu.be/6AHWeoIm6jo
 <h2>Processing</h2>
 El videojuego ha sido desarrollado utilizando Processing, un entorno de programación altamente versátil diseñado específicamente para la creación de aplicaciones visuales interactivas. En nuestro proyecto, hemos organizado el código en varias clases para una gestión eficiente y modular del juego. Contamos con tres clases de niveles, cada una representando un nivel diferente del juego: nivel1, nivel2 y nivel3. Además, hemos implementado tres clases de jugadores, que incluyen player, player2 y player3, cada una con características únicas para ofrecer una experiencia de juego diversa. Para gestionar la interacción con las paredes y otros objetos del juego, hemos creado una clase llamada Pared. 
 
