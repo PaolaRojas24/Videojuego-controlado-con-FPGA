@@ -55,6 +55,87 @@ void draw() {
 Esta estructura modular y organizada nos ha permitido desarrollar y mantener el juego de manera efectiva, facilitando la implementación de nuevas características y la solución de problemas
 <h2>Código en ensamblador</h2>
 <h2>Código VHDL</h2>
-![RTL](https://github.com/PaolaRojas24/Videojuego-controlado-con-FPGA/assets/122306404/5b3fbad3-1eec-4ce9-a48e-67ae0da90d8b)
+```psm
+CONSTANT PuertoBoton, 00
+      CONSTANT PuertoLeeListoTX,    11
+      CONSTANT PuertoEscribeDatoTX, 12
+      
+      NAMEREG s7, boton
+      NAMEREG s5, DatoSerial
+      NAMEREG s6, EstadoTX
+      
+      ADDRESS 000
+loop:
+      INPUT boton, PuertoBoton
+      AND boton, 0F
 
+      ;1 0 0 0
+      COMPARE boton, 08
+      JUMP Z, Izquierda
+      ;0 0 0 1
+      COMPARE boton, 01
+      JUMP Z, Derecha
+      ;0 1 0 0
+      COMPARE boton, 04
+      JUMP Z, Arriba
+      ;0 0 1 0
+      COMPARE boton, 02
+      JUMP Z, Abajo
+      ;0 1 0 1
+      COMPARE boton, 05
+      JUMP Z, DiagDer
+      ;1 1 0 0
+      COMPARE boton, 0C
+      JUMP Z, DiagIzq
+      JUMP salidaDefault
+
+Izquierda:
+      LOAD DatoSerial, "A"
+      CALL tx_uart
+      Jump loop
+Derecha:
+      LOAD DatoSerial, "D"
+      CALL tx_uart
+      Jump loop
+Arriba:
+      LOAD DatoSerial, "W"
+      CALL tx_uart
+      Jump loop
+Abajo:
+      LOAD DatoSerial, "S"
+      CALL tx_uart
+      Jump loop
+DiagDer:
+      LOAD DatoSerial, "E"
+      CALL tx_uart
+      Jump loop
+DiagIzq:
+      LOAD DatoSerial, "Q"
+      CALL tx_uart
+      Jump loop
+salidaDefault:
+      LOAD DatoSerial, "."
+      CALL tx_uart
+      Jump loop
+
+tx_uart:
+      INPUT EstadoTX, PuertoLeeListoTX
+      COMPARE EstadoTX, 01
+      JUMP Z, tx_uart
+      OUTPUT DatoSerial, PuertoEscribeDatoTX
+      CALL delay
+      RETURN
+
+delay: 
+      LOAD s2, 17
+      LOAD s1, D7
+      LOAD s0, 84
+      
+delay_loop: 
+      SUB s0, 1'd
+      SUBCY s1, 0'd
+      SUBCY s2, 0'd
+      JUMP NZ, delay_loop
+      RETURN
+```
 
