@@ -9,7 +9,7 @@ El videojuego presenta una emocionante aventura donde los jugadores controlan a 
 </br>
 El diseño de este emocionante juego se llevó a cabo principalmente mediante el uso de Processing, un entorno de programación especializado en la creación de experiencias visuales interactivas. Además, para lograr una interacción fluida entre el juego y la tarjeta FPGA, se emplearon herramientas adicionales como Vivado, utilizando VHDL, y Picoblaze con lenguaje ensamblador. Estas herramientas permitieron establecer una comunicación efectiva entre la tarjeta FPGA, que actúa como el control del juego a través de cuatro botones, el puerto serial de la computadora y el propio juego implementado en Processing. </br>
 </br>
--Repositorio del juego: https://github.com/PaolaRojas24/Lava-Escape
+-Repositorio del juego: https://github.com/PaolaRojas24/Lava-Escape </br>
 -Video del juego: https://youtu.be/y9cTiVToyhw?feature=shared </br>
 -Video de la presentación: https://youtu.be/6AHWeoIm6jo
 <h2>Processing</h2>
